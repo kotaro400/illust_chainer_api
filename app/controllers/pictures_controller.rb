@@ -1,14 +1,14 @@
 class PicturesController < ApplicationController
 
   def index
-    pictures = Picture.all
+    pictures = Picture.ordered
     render json: pictures, name: false
   end
 
   def create
     picture = Picture.new(picture_params)
     if picture.save
-      pictures = Picture.all
+      pictures = Picture.ordered
       render json: pictures, name: true
     else
       render json: picture.errors
