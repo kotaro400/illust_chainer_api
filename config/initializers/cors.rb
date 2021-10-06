@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'http://localhost:3000'
+    origins 'http://localhost:3000', "http://illust-chainer.s3-website-ap-northeast-1.amazonaws.com"
 
     resource '*',
       headers: :any,
