@@ -9,7 +9,7 @@ class PicturesController < ApplicationController
     picture = Picture.new(picture_params)
     if picture.save
       pictures = Picture.ordered
-      render json: pictures, name: true
+      render json: pictures, name: true, meta: { chained: picture.chained? }
     else
       render json: picture.errors
     end
