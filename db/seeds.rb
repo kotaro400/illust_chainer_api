@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Picture.destroy_all
+Chain.destroy_all
+
+chain = Chain.create()
+picture = chain.pictures.create(name: "りんご", order: 1)
+picture.image.attach(io: File.open("#{Rails.root}/tmp/apple.PNG"), filename: "apple.png", content_type: "image/png")
