@@ -1,9 +1,11 @@
 class Picture < ApplicationRecord
   include Rails.application.routes.url_helpers
 
-  validates :order, uniqueness: true
+  validates :order, uniqueness: { scope: :chain_id }
+  validate :only_last_chain, :must_be_sequenced_order, on: :create
 
   has_one_attached :image
+  belongs_to :chain
 
   scope :ordered, -> { order(order: :desc) }
 
@@ -15,5 +17,20 @@ class Picture < ApplicationRecord
 
   def image_url
     image.attached? ? url_for(image) : nil
+  end
+
+  private
+  def only_last_chain
+    if chain.id != Chain.last.id
+      errors.add(:base, "そのしりとりはすでに終了しています")
+    end
+  end
+
+  def must_be_sequenced_order
+    max_order = chain.pictures.select {|picture| picture.persisted? }.map {|picture| picture.order }.max
+    max_order = max_order ? max_order : 0
+    if max_order + 1 != order
+      errors.add(:base, "すでに誰かが回答済みです")
+    end
   end
 end

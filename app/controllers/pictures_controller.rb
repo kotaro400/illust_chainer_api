@@ -1,17 +1,25 @@
 class PicturesController < ApplicationController
 
   def index
-    pictures = Picture.ordered
+    pictures = Chain.last.pictures.ordered
     render json: pictures, name: false
   end
 
   def create
-    picture = Picture.new(picture_params)
+    chain = Chain.find_by(id: params[:chain_id])
+    picture = chain.pictures.build(picture_params)
     if picture.save
-      pictures = Picture.ordered
-      render json: pictures, name: true, meta: { chained: picture.chained? }
+      pictures = chain.pictures.ordered
+      if picture.chained?
+        render json: pictures, name: true, meta: { chained: true }
+      else
+        new_chain = Chain.create()
+        picture = new_chain.pictures.create(name: "りんご", order: 1)
+        picture.image.attach(io: File.open("#{Rails.root}/tmp/apple.PNG"), filename: "apple.png", content_type: "image/png")
+        render json: pictures, name: true, meta: { chained: false }
+      end
     else
-      render json: picture.errors
+      render json: picture.errors, status: 400
     end
   end
 
