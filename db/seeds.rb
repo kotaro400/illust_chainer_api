@@ -11,4 +11,4 @@ Chain.destroy_all
 
 chain = Chain.create()
 picture = chain.pictures.create(name: "りんご", order: 1)
-picture.image.attach(io: File.open("#{Rails.root}/tmp/apple.PNG"), filename: "apple.png", content_type: "image/png")
+picture.image.attach(io: File.open("#{Rails.root}/tmp/apple.png"), filename: "apple.png", content_type: "image/png")

@@ -15,7 +15,7 @@ class PicturesController < ApplicationController
       else
         new_chain = Chain.create()
         picture = new_chain.pictures.create(name: "りんご", order: 1)
-        picture.image.attach(io: File.open("#{Rails.root}/tmp/apple.PNG"), filename: "apple.png", content_type: "image/png")
+        picture.image.attach(io: File.open("#{Rails.root}/tmp/apple.png"), filename: "apple.png", content_type: "image/png")
         render json: pictures, name: true, meta: { chained: false }
       end
     else
